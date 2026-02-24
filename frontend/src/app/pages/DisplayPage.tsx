@@ -48,6 +48,7 @@ export function DisplayPage() {
   const [waiting, setWaiting] = useState<Reservation[]>([]);
 
   const [remain, setRemain] = useState<number | null>(null);
+  const [hadAnyReservation, setHadAnyReservation] = useState(false);
 
   // UI表示用（予定時刻計算用）
   const estimatedTimes = useMemo(() => {
@@ -177,6 +178,12 @@ export function DisplayPage() {
     return () => clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    if(current || waiting.length > 0){
+      setHadAnyReservation(true);
+    }
+  },[current, waiting]);
+
   // ----- 開始後：currentがいなくて待ちがあるなら自動でstart -----
   useEffect(() => {
     if (!hasStarted) return;
@@ -203,6 +210,14 @@ export function DisplayPage() {
 
   const hasNobody = !current && waiting.length === 0;
 
+  //全員終了している場合の専用画面
+  if(hasStarted && hasNobody && hadAnyReservation){
+    return(
+      <div className="min-h-screen flex items-center justify-center text-6xl text-gray-400">
+        本日は終了しました。
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-6xl mx-auto">
@@ -235,6 +250,7 @@ export function DisplayPage() {
               <p className="text-3xl text-gray-400">
                 予約受付時間外です
               </p>
+
               <p className="text-xl text-gray-500 mt-2">
                 受付時間: 8:30 ~ 12:30
               </p>
