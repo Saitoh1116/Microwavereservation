@@ -86,7 +86,8 @@ public class ReservationController {
     // 現在使用中の人
     @GetMapping("/current")
     public Reservation current() {
-        return repo.findFirstByStatusOrderByCreatedAtAsc("USING");
+        Reservation using = repo.findFirstByStatusOrderByCreatedAtAsc("USING");
+        return using != null ? using : null;
     }
 
     // 待機リスト
