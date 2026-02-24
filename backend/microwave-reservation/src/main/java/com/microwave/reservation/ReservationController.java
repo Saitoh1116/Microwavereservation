@@ -1,4 +1,4 @@
-
+package com.microwave.reservation;
 
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
@@ -10,6 +10,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.ZoneId;
 import java.time.LocalTime;
 import jakarta.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @CrossOrigin(
   origins = "*"
@@ -106,19 +108,22 @@ public class ReservationController {
 
     // 全削除（リセット）
     @PostMapping("/reset")
-    public void reset(@RequestParam String token, HttpServletRequest request){
+    public void resetToday(@RequestParam String password) {
 
-      String ip = request.getRemoteAddr();
+      // 今日の "MM-dd" を期待パスワードにする（JST）
+      String expected = LocalDate.now(JST).format(DateTimeFormatter.ofPattern("MM-dd"));
 
-      if(!ip.equals("127.0.0.1") && !ip.equals("::1")){
-        throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+      if (!expected.equals(password)) {
+        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "password mismatch");
       }
 
-      if(!resetToken.equals(token)){
-        throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-      }
-      repo.deleteAll();
+      LocalDate today = LocalDate.now(JST);
+      repo.deleteByCreatedAtBetween(
+          today.atStartOfDay(),
+          today.atTime(23, 59, 59)
+      );
     }
 }
+
 
 
