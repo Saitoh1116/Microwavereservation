@@ -210,13 +210,13 @@ export function DisplayPage() {
 
         if(r <= 0) {
           setRemain(0);
-          clearInterval(timer);
+          clearInterval(timer)
 
           //完了
           await completeCurrent();
 
           //次を開始
-          const res = await fetch(`${API_BASE}/api/resercations/start`, {
+          const res = await fetch(`${API_BASE}/api/reservations/start`, {
             method: "POST",
           });
 
@@ -238,7 +238,7 @@ export function DisplayPage() {
       run();
     }, 1000);
 
-    return () => cleaerInterval(timer);
+    return () => clearInterval(timer);
   }, [current]);
 
   const hasNobody = !current && waiting.length === 0;
