@@ -34,7 +34,7 @@ function isReservationTime(): boolean{
   start.setHours(8, 30, 0, 0);
 
   const end = new Date();
-  end.setHours(12, 30, 0, 0);
+  end.setHours(17, 30, 0, 0);
   
   return now >= start && now <= end;
 }
