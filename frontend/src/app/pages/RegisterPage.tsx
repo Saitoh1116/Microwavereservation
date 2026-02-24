@@ -51,7 +51,6 @@ export function RegisterPage() {
   const isAcceptanceTime = true;
 
   const handleSubmit = async () => {
-    alert("handleSubmit start");
 
     if (!selectedDuration || !name.trim()) {
       alert("入力不足");
@@ -70,15 +69,12 @@ export function RegisterPage() {
       })
     });
 
-   alert("status: " + res.status);
-
    if (!res.ok) {
       alert("API失敗: " + res.status);
       return;
     }
 
     const saved = await res.json();
-    alert("saved.id = " + saved?.id);
     navigate(`/register/complete?id=${saved.id}`);
   };
 
