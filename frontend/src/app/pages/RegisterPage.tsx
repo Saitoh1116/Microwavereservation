@@ -51,8 +51,13 @@ export function RegisterPage() {
   const isAcceptanceTime = true;
 
   const handleSubmit = async () => {
+    alert("handleSubmit start");
 
-    if (!selectedDuration || !name.trim()) return;
+    if (!selectedDuration || !name.trim()) {
+      alert("入力不足");
+      return;
+    }
+    
 
     const res = await fetch("https://api.mokichi-flashcard.com/api/reservations", {
       method: "POST",
