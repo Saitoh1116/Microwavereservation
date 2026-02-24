@@ -144,8 +144,12 @@ export function RegisterPage() {
         </div>
 
         <Button
-          onClick={handleSubmit}
-          disabled={!selectedDuration || !name.trim()}
+          onClick={() => {
+            //handleSubmit
+            alert("clicked");
+            handleSubmit();
+          }}
+          //disabled={!selectedDuration || !name.trim()}
           className="w-full py-8 text-3xl rounded-lg bg-green-600 text-white"
           //className="w-full py-8 text-3xl rounded-lg disabled:opacity-50 disabled:cursor-not-allowed bg-green-600 hover:bg-green-700 text-white"
         >
