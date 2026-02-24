@@ -136,7 +136,6 @@ export function DisplayPage() {
   // ---- リセット ----
   const resetAll = async () => {
     const pw = prompt("管理者パスワードを入力してください");
-
     if(!pw) return;
 
     try{
