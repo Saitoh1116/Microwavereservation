@@ -203,21 +203,42 @@ export function DisplayPage() {
     if(!current?.startTime) return;
 
     const timer = setInterval(() => {
-      const start = new Date(current.startTime!).getTime();
-      const end = start + (current.duration + 1) * 60 * 1000;
-      const r = Math.floor((end - Date.now()) / 1000);
-    
-      if(r <= 0){
-        setRemain(0);
-        clearInterval(timer);
-        completeCurrent();
-        return;
-      }
+      const run = async () => {
+        const start = new Date(current.startTime!).getTime();
+        const end = start + (current.duration + 1) * 60 * 1000;
+        const r = Math.floor((end - Date.now()) /1000);
 
-      setRemain(r);
+        if(r <= 0) {
+          setRemain(0);
+          clearInterval(timer);
+
+          //完了
+          await completeCurrent();
+
+          //次を開始
+          const res = await fetch(`${API_BASE}/api/resercations/start`, {
+            method: "POST",
+          });
+
+          const started = await res.json().catch(() => null);
+          
+          if(started){
+            await loadCurrent();
+            await loadWaiting();
+          } else {
+            setCurrent(null);
+          }
+
+          return;
+        }
+
+        setRemain(r);
+      };
+
+      run();
     }, 1000);
 
-    return () => clearInterval(timer);
+    return () => cleaerInterval(timer);
   }, [current]);
 
   const hasNobody = !current && waiting.length === 0;
