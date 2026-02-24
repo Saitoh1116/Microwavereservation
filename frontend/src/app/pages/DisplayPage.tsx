@@ -202,7 +202,14 @@ export function DisplayPage() {
       const start = new Date(current.startTime!).getTime();
       const end = start + current.duration * 60 * 1000;
       const r = Math.floor((end - Date.now()) / 1000);
-      setRemain(r > 0 ? r : 0);
+    
+      if(r <= 0){
+        setRemain(0);
+        completeCurrent();
+        return;
+      }
+
+      setRemain(r);
     }, 1000);
 
     return () => clearInterval(timer);
