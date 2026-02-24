@@ -1,4 +1,3 @@
-package com.microwave.reservation;
 
 
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +12,8 @@ import java.time.LocalTime;
 import jakarta.servlet.http.HttpServletRequest;
 
 @CrossOrigin(
-  origins = {
-    "https://microwavereservationpages.dev"
-    }
-  )
+  origins = "*"
+)
 @RestController
 @RequestMapping("/api/reservations")
 public class ReservationController {
@@ -34,9 +31,10 @@ public class ReservationController {
     private static final ZoneId JST = ZoneId.of("Asia/Tokyo");
 
     private boolean isWithinAcceptanceHours(){
-      LocalTime now = LocalTime.now(JST);
-      return !now.isBefore(LocalTime.of(8,30))
-        && !now.isAfter(LocalTime.of(12,30));
+      return true;
+      //LocalTime now = LocalTime.now(JST);
+      //return !now.isBefore(LocalTime.of(8,30))
+        //&& !now.isAfter(LocalTime.of(12,30));
     }
 
     // 全件取得
