@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 import { CheckCircle } from 'lucide-react';
 import { useReservations } from '../hooks/useReservations';
 
