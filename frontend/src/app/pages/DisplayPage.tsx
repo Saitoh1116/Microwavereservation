@@ -125,11 +125,15 @@ export function DisplayPage() {
         `${API_BASE}/api/reservations/${current.id}/complete`,
         { method: "POST" }
       );
-      if (!res.ok) return;
-      // 完了したら再読込
+
+      if(!res.ok){
+        console.error("complete failed");
+        return;
+      }
+
       await loadCurrent();
-      await loadWaiting();
-    } catch (e) {
+      await loadWaiting(); 
+    } catch(e) {
       console.error("completeCurrent failed", e);
     }
   };
@@ -200,11 +204,12 @@ export function DisplayPage() {
 
     const timer = setInterval(() => {
       const start = new Date(current.startTime!).getTime();
-      const end = start + current.duration * 60 * 1000;
+      const end = start + (current.duration + 1) * 60 * 1000;
       const r = Math.floor((end - Date.now()) / 1000);
     
       if(r <= 0){
         setRemain(0);
+        clearInterval(timer);
         completeCurrent();
         return;
       }
