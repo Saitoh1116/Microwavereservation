@@ -186,7 +186,9 @@ export function DisplayPage() {
     if(current || waiting.length > 0){
       setHadAnyReservation(true);
     }
-  },[current, waiting]);
+  },[current?.id, waiting.length]);
+
+  const hasNobody = !current && waiting.length === 0;
 
   // ----- 開始後：currentがいなくて待ちがあるなら自動でstart -----
   useEffect(() => {
@@ -241,16 +243,7 @@ export function DisplayPage() {
     return () => clearInterval(timer);
   }, [current]);
 
-  const hasNobody = !current && waiting.length === 0;
 
-  //全員終了している場合の専用画面
-  if(hasStarted && hasNobody && hadAnyReservation){
-    return(
-      <div className="min-h-screen flex items-center justify-center text-6xl text-gray-400">
-        本日は終了しました。
-      </div>
-    );
-  }
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-6xl mx-auto">
@@ -390,8 +383,17 @@ export function DisplayPage() {
         {/* 誰もいない */}
         {hasNobody && (
           <div className="bg-white rounded-2xl shadow-lg p-16 text-center border-4 border-gray-200">
-            <p className="text-5xl text-gray-400 mb-6">予約を受付中です</p>
-            <p className="text-2xl text-gray-500">QRコードから予約してください</p>
+            {hadAnyReservation ? (
+              <>
+                <p className="text-5xl text-gray-400 mb-6">本日は終了しました</p>
+                <p className="text-2xl text-gray-500">また明日ご利用ください</p>
+              </>
+          ) : (
+              <>
+                <p className="text-5xl text-gray-400 mb-6">予約を受付中です</p>
+                <p className="text-2xl text-gray-500">QRコードから予約してください</p>
+              </>
+            )}
           </div>
         )}
 
