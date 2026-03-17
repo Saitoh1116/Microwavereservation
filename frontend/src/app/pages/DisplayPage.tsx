@@ -16,7 +16,7 @@ type Reservation = {
   startTime?: string; // まだ無いなら undefined
 };
 
-const API_BASE = "https://api.mokichi-flashcard.com";
+const API_BASE = "https://microwave.mokichi-flashcard.com";
 const FRONT_BASE = window.location.origin;
 
 // 12:15開始（Displayの開始判定用）
