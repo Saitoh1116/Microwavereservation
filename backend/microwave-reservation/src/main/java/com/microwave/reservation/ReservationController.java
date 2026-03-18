@@ -12,6 +12,7 @@ import java.time.LocalTime;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import org.springframework.transaction.annotation.Transactional;
 
 @CrossOrigin(
   origins = "*"
@@ -108,6 +109,7 @@ public class ReservationController {
     }
 
     // 全削除（リセット）
+    @Transactional
     @PostMapping("/reset")
     public void resetToday(@RequestParam String password) {
 

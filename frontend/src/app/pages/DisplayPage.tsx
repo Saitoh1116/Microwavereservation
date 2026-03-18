@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Clock } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { QRCodeSVG } from "qrcode.react";
+import { API_BASE } from "../lib/api";
 
 /**
  * サーバーから返る Reservation の最小形
@@ -16,7 +17,6 @@ type Reservation = {
   startTime?: string; // まだ無いなら undefined
 };
 
-const API_BASE = "https://api.microwave.mokichi-flashcard.com"
 const FRONT_BASE = window.location.origin;
 
 // 12:15開始（Displayの開始判定用）
@@ -410,4 +410,3 @@ export function DisplayPage() {
     </div>
   );
 }
-

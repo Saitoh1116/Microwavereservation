@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from '../components/ui/button';
 import { useReservations } from '../hooks/useReservations';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { API_BASE } from '../lib/api';
 
 const DURATIONS = [
   { value: 1, label: '1分' },
@@ -58,24 +59,30 @@ export function RegisterPage() {
     }
     
 
-    const res = await fetch("https://api.mokichi-flashcard.com/api/reservations", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        name: name.trim(),
-        duration: selectedDuration
-      })
-    });
+    try {
+      const res = await fetch(`${API_BASE}/api/reservations`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          duration: selectedDuration
+        })
+      });
 
-   if (!res.ok) {
-      alert("API失敗: " + res.status);
-      return;
+      if (!res.ok) {
+        const errorText = await res.text().catch(() => "");
+        alert(`API失敗: ${res.status}${errorText ? ` ${errorText}` : ""}`);
+        return;
+      }
+
+      const saved = await res.json();
+      navigate(`/register/complete?id=${saved.id}`);
+    } catch (error) {
+      console.error("reservation create failed", error);
+      alert("予約APIに接続できませんでした");
     }
-
-    const saved = await res.json();
-    navigate(`/register/complete?id=${saved.id}`);
   };
 
   if(!hasValidAccess){
